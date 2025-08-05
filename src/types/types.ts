@@ -2,7 +2,7 @@
 export interface Product {
     id: number;
     title: string;
-    brand: string;
+    brand?: string;
     price: number;
     thumbnail: string;
 }
@@ -19,4 +19,13 @@ export interface Category {
     slug: string;
     name: string;
     url: string;
+}
+
+export interface CartItem {
+    id: string;
+    title: string;
+    price: number;
+    quantity: number;
+    thumbnail: string;
+    sku?: string;
 }

@@ -1,10 +1,28 @@
-import { fetchProductById } from "@/lib/api";
+"use client";
 
-export default async function ProductDetailsPage({ params }: { params: { productId: string }; }) {
-  const { productId } = await params;
-  const product = await fetchProductById(productId);
+import { useEffect, useState } from "react";
+import { fetchProductById } from "@/lib/api";
+import CartButton from "@/components/CartButton";
+import React from "react";
+
+export default function ProductDetailsPage({ params }: { params: { productId: string } }) {
+  const { productId } = React.use(params as unknown as Promise<{ productId: string }>);
+  const [product, setProduct] = useState<any>(null);
+  const [quantity, setQuantity] = useState(1);
+
+  useEffect(() => {
+    async function getProduct() {
+      const res = await fetchProductById(productId);
+      setProduct(res);
+    }
+
+    getProduct();
+  }, [productId]);
 
   if (!product) return <div className="p-6">Product not found</div>;
+
+  const increaseQty = () => setQuantity((q) => q + 1);
+  const decreaseQty = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
 
   return (
     <main className="p-6">
@@ -27,13 +45,23 @@ export default async function ProductDetailsPage({ params }: { params: { product
           </p>
           <div className="flex items-center gap-4 mb-4">
             <div className="flex items-center border rounded">
-              <button className="px-3 py-1 text-xl font-bold">-</button>
-              <span className="px-4">1</span>
-              <button className="px-3 py-1 text-xl font-bold">+</button>
+              <button onClick={decreaseQty} className="px-3 py-1 text-xl font-bold">
+                -
+              </button>
+              <span className="px-4">{quantity}</span>
+              <button onClick={increaseQty} className="px-3 py-1 text-xl font-bold">
+                +
+              </button>
             </div>
-            <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded font-semibold">
-              BUY NOW
-            </button>
+            <CartButton
+              product={{
+                id: product.id,
+                title: product.title,
+                price: product.price,
+                thumbnail: product.thumbnail,
+              }}
+              quantity={quantity}
+            />
           </div>
           <p className="text-sm text-gray-600 mb-2">Average Rating: ⭐ {product.rating}</p>
         </div>
