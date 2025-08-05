@@ -45,11 +45,11 @@ export default function ProductDetailsPage({ params }: { params: { productId: st
           </p>
           <div className="flex items-center gap-4 mb-4">
             <div className="flex items-center border rounded">
-              <button onClick={decreaseQty} className="px-3 py-1 text-xl font-bold">
+              <button onClick={decreaseQty} className="cursor-pointer px-3 py-1 text-xl font-bold">
                 -
               </button>
               <span className="px-4">{quantity}</span>
-              <button onClick={increaseQty} className="px-3 py-1 text-xl font-bold">
+              <button onClick={increaseQty} className="cursor-pointer px-3 py-1 text-xl font-bold">
                 +
               </button>
             </div>
@@ -59,6 +59,7 @@ export default function ProductDetailsPage({ params }: { params: { productId: st
                 title: product.title,
                 price: product.price,
                 thumbnail: product.thumbnail,
+                sku: product.sku
               }}
               quantity={quantity}
             />

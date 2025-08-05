@@ -2,44 +2,29 @@
 
 import React from "react";
 import Link from "next/link";
-import { CartItem } from "@/types/types";
+import { useCart } from "@/context/CartContext";
 
 export default function CartPage() {
-  const [cart, setCart] = React.useState<CartItem[]>([]);
-
-  React.useEffect(() => {
-    const storedCart = sessionStorage.getItem("cart");
-    if (storedCart) {
-      setCart(JSON.parse(storedCart));
-    }
-  }, []);
+  const { cart, removeFromCart, updateCartItemQuantity, totalItems } = useCart();
 
   const updateQuantity = (id: string, newQuantity: number) => {
     if (newQuantity < 1) return;
-
-    const updatedCart = cart.map(item =>
-      item.id === id ? { ...item, quantity: newQuantity } : item
-    );
-
-    setCart(updatedCart);
-    sessionStorage.setItem("cart", JSON.stringify(updatedCart));
+    updateCartItemQuantity(id, newQuantity);
   };
 
   const removeItem = (id: string) => {
-    const updatedCart = cart.filter(item => item.id !== id);
-    setCart(updatedCart);
-    sessionStorage.setItem("cart", JSON.stringify(updatedCart));
+    removeFromCart(id);
   };
 
   const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
   return (
     <main className="p-6 max-w-6xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Your Cart ({cart.length} {cart.length === 1 ? 'Item' : 'Items'})</h1>
+      <h1 className="text-2xl font-bold mb-6">Your Cart ({totalItems} {totalItems === 1 ? 'Item' : 'Items'})</h1>
       {cart.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-lg mb-4">Your cart is empty</p>
-          <Link href="/products" className="text-blue-600 hover:underline">
+          <Link href="/" className="text-blue-600 hover:underline">
             Continue Shopping
           </Link>
         </div>
@@ -67,14 +52,14 @@ export default function CartPage() {
                     <div className="flex items-center border rounded mb-2">
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                        className="px-3 py-1"
+                        className="px-3 py-1 cursor-pointer"
                       >
                         -
                       </button>
                       <span className="px-3">{item.quantity}</span>
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                        className="px-3 py-1"
+                        className="px-3 py-1 cursor-pointer"
                       >
                         +
                       </button>
@@ -82,7 +67,7 @@ export default function CartPage() {
                     <p className="font-medium">C${(item.price * item.quantity).toFixed(2)}</p>
                     <button
                       onClick={() => removeItem(item.id)}
-                      className="text-red-500 text-sm mt-2 hover:underline"
+                      className="text-red-500 text-sm mt-2 hover:underline cursor-pointer"
                     >
                       Remove
                     </button>

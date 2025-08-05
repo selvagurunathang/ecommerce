@@ -25,6 +25,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                         title: product.title,
                         price: product.price,
                         thumbnail: product.thumbnail,
+                        sku: product.sku
                     }}
                     quantity={1}
                 />

@@ -5,11 +5,13 @@ import Link from 'next/link';
 import { FaShoppingCart } from 'react-icons/fa';
 import { Category } from "@/types/types";
 import { fetchAllCategories } from "@/lib/api";
+import { useCart } from "@/context/CartContext";
 
 export default function Header() {
     const [categories, setCategories] = useState<Category[]>([]);
     const [headerHeight, setHeaderHeight] = useState(0);
     const headerRef = useRef<HTMLDivElement>(null);
+    const { totalItems } = useCart();
 
     useEffect(() => {
         const getCategories = async () => {
@@ -47,7 +49,9 @@ export default function Header() {
                         <Link href="/cart" className="flex items-center gap-2 hover:text-black transition-colors">
                             <div className="relative">
                                 <FaShoppingCart className="text-lg" />
-                                <span className="absolute -top-2 -right-2 bg-black text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">0</span>
+                                <span className="absolute -top-2 -right-2 bg-black text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                                    {totalItems}
+                                </span>
                             </div>
                             <span>Cart</span>
                         </Link>
