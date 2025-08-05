@@ -1,38 +1,27 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
-
-interface Category {
-  slug: string;
-  name: string;
-  url: string;
-}
+import ProductGrid from "@/components/ProductGrid";
+import { Product } from "@/types/types";
+import { fetchAllProducts } from "@/lib/api";
 
 export default function HomePage() {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    fetch('/api/categories.json')
-      .then(res => res.json())
-      .then(data => setCategories(data));
+    const getProducts = async () => {
+      const products = await fetchAllProducts();
+      setProducts(products);
+    };
+
+    getProducts();
   }, []);
 
   return (
-    <main className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Categories</h1>
-      <ul className="space-y-2">
-        {categories.map((category) => (
-          <li key={category.slug}>
-            <Link
-              href={`/category/${encodeURIComponent(category.slug)}`}
-              className="text-blue-600 hover:underline"
-            >
-              {category.name}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </main>
+    <>
+      <main className="p-6">
+        {products.length > 0 && <ProductGrid products={products} />}
+      </main>
+    </>
   );
 }
