@@ -61,7 +61,9 @@ export default function CartPage() {
                               className="w-14 h-14 object-contain flex-shrink-0"
                             />
                             <div>
-                              <p className="font-semibold">{item.title}</p>
+                              <Link href={`/product/${item.id}`} className="cursor-pointer">
+                                <p className="font-semibold">{item.title}</p>
+                              </Link>
                               <p className="text-xs text-gray-500">{item.sku || "SKU: N/A"}</p>
                               <p className="mt-1 md:hidden font-medium text-sm">C${item.price.toFixed(2)}</p>
                             </div>
