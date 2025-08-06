@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { FaShoppingCart } from 'react-icons/fa';
+import { FaShoppingCart, FaBars, FaTimes } from 'react-icons/fa';
 import { Category } from "@/types/types";
 import { fetchAllCategories } from "@/lib/api";
 import { useCart } from "@/context/CartContext";
@@ -10,6 +10,7 @@ import { useCart } from "@/context/CartContext";
 export default function Header() {
     const [categories, setCategories] = useState<Category[]>([]);
     const [headerHeight, setHeaderHeight] = useState(0);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const headerRef = useRef<HTMLDivElement>(null);
     const { totalItems } = useCart();
 
@@ -37,15 +38,27 @@ export default function Header() {
         <header className="w-full">
             <div
                 ref={headerRef}
-                className="fixed top-0 left-0 right-0 z-50 bg-white border-b shadow-sm"
+                className="py-4 md:py-0 fixed top-0 left-0 right-0 z-50 bg-white border-b shadow-sm"
             >
-                <div className="flex items-center justify-between px-6 py-4">
-                    <div className="flex items-center gap-3">
+                <div className="flex items-center justify-between px-6 py-4 relative">
+                    <button
+                        className="md:hidden text-xl"
+                        onClick={() => setIsMobileMenuOpen(true)}
+                        aria-label="Open Menu"
+                    >
+                        <FaBars />
+                    </button>
+                    <div className="md:hidden absolute left-1/2 transform -translate-x-1/2">
                         <Link href="/">
                             <img src="/logo.png" alt="Logo" className="h-12 w-auto" />
                         </Link>
                     </div>
-                    <div className="flex items-center gap-6 text-sm text-gray-800">
+                    <div className="hidden md:block">
+                        <Link href="/">
+                            <img src="/logo.png" alt="Logo" className="h-12 w-auto" />
+                        </Link>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-800">
                         <Link href="/cart" className="flex items-center gap-2 hover:text-black transition-colors">
                             <div className="relative">
                                 <FaShoppingCart className="text-lg" />
@@ -53,18 +66,18 @@ export default function Header() {
                                     {totalItems}
                                 </span>
                             </div>
-                            <span>Cart</span>
+                            <span className="hidden md:inline">Cart</span>
                         </Link>
                     </div>
                 </div>
             </div>
             <div style={{ height: `${headerHeight}px` }} />
-            <nav className="bg-blue-900 text-white text-sm font-semibold px-6 py-3">
+            <nav className="bg-blue-900 text-white text-sm font-semibold px-6 py-3 hidden md:block">
                 <ul className="flex flex-wrap gap-6">
                     {categories.map((category) => (
                         <li
                             key={category.slug}
-                            className="flex items-center gap-1 cursor-pointer hover:underline capitalize"
+                            className="hover:underline capitalize"
                         >
                             <Link href={`/category/${encodeURIComponent(category.slug)}`}>
                                 {category.name}
@@ -73,6 +86,33 @@ export default function Header() {
                     ))}
                 </ul>
             </nav>
+            <div
+                className={`fixed top-0 left-0 h-full w-64 bg-blue-900 text-white p-6 z-50 transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+                    }`}
+            >
+                <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-lg font-semibold">Categories</h2>
+                    <button
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="text-white text-xl"
+                        aria-label="Close Menu"
+                    >
+                        <FaTimes />
+                    </button>
+                </div>
+                <div className="overflow-y-auto max-h-[calc(100vh-80px)] space-y-4">
+                    {categories.map((category) => (
+                        <Link
+                            key={category.slug}
+                            href={`/category/${encodeURIComponent(category.slug)}`}
+                            className="capitalize block hover:underline"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                            {category.name}
+                        </Link>
+                    ))}
+                </div>
+            </div>
         </header>
     );
 }
