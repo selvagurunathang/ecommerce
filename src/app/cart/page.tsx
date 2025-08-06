@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import QuantitySelector from "@/components/QuantitySelector";
+import Image from 'next/image';
 
 export default function CartPage() {
   const { cart, removeFromCart, updateCartItemQuantity, totalItems } = useCart();
@@ -51,7 +52,10 @@ export default function CartPage() {
                       >
                         <td className="pt-4 block md:table-cell">
                           <div className="flex items-center gap-4">
-                            <img
+                            <Image
+                              width={288}
+                              height={288}
+                              quality={100}
                               src={item.thumbnail}
                               alt={item.title}
                               className="w-14 h-14 object-contain flex-shrink-0"

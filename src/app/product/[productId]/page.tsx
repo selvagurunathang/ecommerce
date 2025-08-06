@@ -5,6 +5,7 @@ import { fetchProductById } from "@/lib/api";
 import CartButton from "@/components/CartButton";
 import QuantitySelector from "@/components/QuantitySelector";
 import React from "react";
+import Image from 'next/image';
 
 export default function ProductDetailsPage({ params }: { params: { productId: string } }) {
   const { productId } = React.use(params as unknown as Promise<{ productId: string }>);
@@ -29,7 +30,10 @@ export default function ProductDetailsPage({ params }: { params: { productId: st
     <main className="p-6">
       <div className="max-w-5xl mx-auto border rounded-lg shadow p-6 flex flex-col md:flex-row gap-6 bg-white items-center md:items-start">
         <div className="flex-shrink-0">
-          <img
+          <Image
+            width={288}
+            height={288}
+            quality={100}
             src={product.thumbnail}
             alt={product.title}
             className="w-72 h-auto rounded"
