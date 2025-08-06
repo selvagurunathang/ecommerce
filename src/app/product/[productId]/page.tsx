@@ -9,18 +9,18 @@ import Image from 'next/image';
 import { Product } from "@/types/types";
 
 export default function ProductDetailsPage({ params }: { params: { productId: string } }) {
-  const { productId } = React.use(params as unknown as Promise<{ productId: string }>);
   const [product, setProduct] = useState<Product | null>(null);
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     async function getProduct() {
+      const { productId } = await params;
       const res = await fetchProductById(productId);
       setProduct(res);
     }
 
     getProduct();
-  }, [productId]);
+  }, []);
 
   if (!product) return <div className="p-6">Product not found</div>;
 
