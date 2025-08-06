@@ -13,6 +13,7 @@ export default function Header() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const headerRef = useRef<HTMLDivElement>(null);
     const { totalItems } = useCart();
+    const sidebarRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const getCategories = async () => {
@@ -22,6 +23,27 @@ export default function Header() {
 
         getCategories();
     }, []);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                sidebarRef.current &&
+                !sidebarRef.current.contains(event.target as Node)
+            ) {
+                setIsMobileMenuOpen(false);
+            }
+        };
+
+        if (isMobileMenuOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isMobileMenuOpen]);
 
     useEffect(() => {
         if (headerRef.current) {
@@ -86,7 +108,14 @@ export default function Header() {
                     ))}
                 </ul>
             </nav>
+            {isMobileMenuOpen && (
+                <div
+                    className="fixed inset-0 bg-opacity-30 z-40"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                />
+            )}
             <div
+                ref={sidebarRef}
                 className={`fixed top-0 left-0 h-full w-64 bg-blue-900 text-white p-6 z-50 transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
                     }`}
             >

@@ -27,7 +27,7 @@ export default function ProductDetailsPage({ params }: { params: { productId: st
 
   return (
     <main className="p-6">
-      <div className="max-w-5xl mx-auto border rounded-lg shadow p-6 flex flex-col md:flex-row gap-6 bg-white">
+      <div className="max-w-5xl mx-auto border rounded-lg shadow p-6 flex flex-col md:flex-row gap-6 bg-white items-center md:items-start">
         <div className="flex-shrink-0">
           <img
             src={product.thumbnail}

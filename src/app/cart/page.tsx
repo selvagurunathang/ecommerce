@@ -30,10 +30,10 @@ export default function CartPage() {
           </Link>
         </div>
       ) : (
-        <div className="flex flex-col md:flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-8">
           <div className="flex-grow">
-            <div className="border rounded-lg divide-y">
-              <div className="border rounded-lg overflow-x-auto">
+            <div className="border rounded divide-y">
+              <div className="overflow-x-auto">
                 <table className="min-w-full text-left">
                   <thead className="bg-gray-100 text-sm uppercase font-bold text-gray-700 border-b">
                     <tr>
