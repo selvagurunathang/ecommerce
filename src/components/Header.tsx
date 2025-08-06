@@ -6,6 +6,7 @@ import { FaShoppingCart, FaBars, FaTimes } from 'react-icons/fa';
 import { Category } from "@/types/types";
 import { fetchAllCategories } from "@/lib/api";
 import { useCart } from "@/context/CartContext";
+import Image from 'next/image';
 
 export default function Header() {
     const [categories, setCategories] = useState<Category[]>([]);
@@ -72,12 +73,12 @@ export default function Header() {
                     </button>
                     <div className="md:hidden absolute left-1/2 transform -translate-x-1/2">
                         <Link href="/">
-                            <img src="/logo.png" alt="Logo" className="h-12 w-auto" />
+                            <Image width={288} height={288} quality={100} src="/logo.png" alt="Logo" className="h-12 w-auto" />
                         </Link>
                     </div>
                     <div className="hidden md:block">
                         <Link href="/">
-                            <img src="/logo.png" alt="Logo" className="h-12 w-auto" />
+                            <Image width={288} height={288} quality={100} src="/logo.png" alt="Logo" className="h-12 w-auto" />
                         </Link>
                     </div>
                     <div className="flex items-center gap-2 text-sm text-gray-800">

@@ -2,12 +2,16 @@ import React from "react";
 import Link from "next/link";
 import { ProductCardProps } from "@/types/types";
 import CartButton from "@/components/CartButton";
+import Image from 'next/image';
 
 export default function ProductCard({ product }: ProductCardProps) {
     return (
         <div className="border rounded-md shadow-sm hover:shadow-md transition duration-300 flex flex-col items-center p-4">
             <Link href={`/product/${product.id}`} className="w-full flex flex-col items-center">
-                <img
+                <Image
+                    width={288}
+                    height={288}
+                    quality={100}
                     src={product.thumbnail}
                     alt={product.title}
                     className="h-40 object-contain mb-4"
