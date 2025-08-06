@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { fetchProductById } from "@/lib/api";
 import CartButton from "@/components/CartButton";
+import QuantitySelector from "@/components/QuantitySelector";
 import React from "react";
 
 export default function ProductDetailsPage({ params }: { params: { productId: string } }) {
@@ -44,15 +45,11 @@ export default function ProductDetailsPage({ params }: { params: { productId: st
             C${product.price}
           </p>
           <div className="flex items-center gap-4 mb-4">
-            <div className="flex items-center border rounded">
-              <button onClick={decreaseQty} className="cursor-pointer px-3 py-1 text-xl font-bold">
-                -
-              </button>
-              <span className="px-4">{quantity}</span>
-              <button onClick={increaseQty} className="cursor-pointer px-3 py-1 text-xl font-bold">
-                +
-              </button>
-            </div>
+            <QuantitySelector
+              quantity={quantity}
+              onIncrease={increaseQty}
+              onDecrease={decreaseQty}
+            />
             <CartButton
               product={{
                 id: product.id,
