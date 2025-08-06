@@ -42,3 +42,9 @@ export interface CartContextType {
     removeFromCart: (id: string) => void;
     updateCartItemQuantity: (id: string, newQuantity: number) => void;
 }
+
+export type QuantitySelectorProps = {
+    quantity: number;
+    onIncrease: () => void;
+    onDecrease: () => void;
+};

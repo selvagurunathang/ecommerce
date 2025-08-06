@@ -1,12 +1,7 @@
 "use client";
 
 import React from "react";
-
-type QuantitySelectorProps = {
-    quantity: number;
-    onIncrease: () => void;
-    onDecrease: () => void;
-};
+import { QuantitySelectorProps } from "@/types/types";
 
 export default function QuantitySelector({ quantity, onIncrease, onDecrease }: QuantitySelectorProps) {
     return (
