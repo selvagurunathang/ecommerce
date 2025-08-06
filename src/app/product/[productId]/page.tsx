@@ -1,26 +1,29 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { fetchProductById } from "@/lib/api";
 import CartButton from "@/components/CartButton";
 import QuantitySelector from "@/components/QuantitySelector";
-import React from "react";
-import Image from 'next/image';
+import Image from "next/image";
 import { Product } from "@/types/types";
 
-export default function ProductDetailsPage({ params }: { params: { productId: string } }) {
+export default function ProductDetailsPage({
+  params: asyncParams,
+}: {
+  params: Promise<{ productId: string }>;
+}) {
+  const { productId } = use(asyncParams);
   const [product, setProduct] = useState<Product | null>(null);
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     async function getProduct() {
-      const { productId } = await params;
       const res = await fetchProductById(productId);
       setProduct(res);
     }
 
     getProduct();
-  }, []);
+  }, [productId]);
 
   if (!product) return <div className="p-6">Product not found</div>;
 
