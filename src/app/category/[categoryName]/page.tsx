@@ -4,10 +4,10 @@ import { Product } from "@/types/types";
 import { fetchProducts } from "@/lib/api";
 
 export default async function CategoryPage({ params }: { params: { categoryName: string }; }) {
-  const { categoryName } = await params
-  const category = decodeURIComponent(categoryName);
 
   try {
+    const { categoryName } = await params;
+    const category = decodeURIComponent(categoryName);
     const res = await fetchProducts(category);
     const products: Product[] = res;
 
