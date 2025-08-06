@@ -3,8 +3,13 @@ import ProductGrid from "@/components/ProductGrid";
 import { Product } from "@/types/types";
 import { fetchProducts } from "@/lib/api";
 
-export default async function CategoryPage({ params }: { params: { categoryName: string } }) {
-  const category = decodeURIComponent(params.categoryName);
+export default async function CategoryPage({
+  params: asyncParams
+}: {
+  params: Promise<{ categoryName: string }>;
+}) {
+  const { categoryName } = await asyncParams;
+  const category = decodeURIComponent(categoryName);
 
   try {
     const res = await fetchProducts(category);
